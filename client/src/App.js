@@ -3,9 +3,10 @@ import { api, socket } from './api'
 
 const App = () => {
   const [messages, setMessages] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [input, setInput] = useState('')
+  const [user, setUser] = useState('')
 
   const getInitialMessages = () => {
     const url = `${api}/messages`
@@ -14,7 +15,7 @@ const App = () => {
       fetch(url)
         .then((res) => res.json())
         .then((data) => setMessages(data))
-      setLoading(false)
+        .then((_) => setLoading(false))
     } catch (error) {
       setLoading(false)
       setError(true)
@@ -26,8 +27,8 @@ const App = () => {
     if (input) {
       const newMessage = {
         content: input,
-        from: 'user1',
-        to: 'user2',
+        from: user,
+        to: user === 'user1' ? 'user2' : 'user1',
         createTs: new Date().getTime(),
       }
       socket.emit('message', newMessage)
@@ -40,6 +41,7 @@ const App = () => {
   useEffect(() => {
     getInitialMessages()
     socket.on('message', (msg) => setMessages((prev) => [...prev, msg]))
+    setUser(window.location.href.includes(3000) ? 'user1' : 'user2')
     return () => socket.emit('end')
   }, []) // eslint-disable-line
 
@@ -52,7 +54,16 @@ const App = () => {
             ? 'loading...'
             : error
             ? 'error'
-            : messages.map((msg) => <p key={msg.createTs}>{msg.content}</p>)}
+            : messages.map((msg) => (
+                <p
+                  className={`message ${
+                    msg.to === user ? 'received-message' : 'sent-message'
+                  }`}
+                  key={msg.createTs}
+                >
+                  {msg.content}
+                </p>
+              ))}
         </div>
         <div className='input-ctr'>
           <input

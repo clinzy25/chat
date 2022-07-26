@@ -48,6 +48,23 @@ button {
   box-sizing: content-box;
 }
 
+.message {
+  padding: 7px;
+  margin: 10px;
+  width: min-content;
+  white-space: nowrap;
+  border-radius: 5px;
+}
+
+.sent-message {
+  margin-left: auto;
+  background-color: #cecece;
+}
+
+.received-message {
+  background-color: #5d95fd;
+}
+
 @media screen and (max-width: 1000px) {
   .chat-ctr {
     width: 100%;
