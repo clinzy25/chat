@@ -1,8 +1,14 @@
+# pylint: disable=missing-function-docstring
 from flask import Flask
 from flask_socketio import SocketIO, send
 from flask_cors import CORS
 from flask import jsonify
-from model import messages
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+from model import query_add_message, query_get_messages
+
 
 app = Flask(__name__)
 CORS(app)
@@ -10,13 +16,21 @@ app.debug = True
 
 socketio = SocketIO(app, cors_allowed_origins='*')
 
+cred = credentials.Certificate('../firebase-key.json')
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
+
+messages_ref = db.collection('messages')
+
 @app.route("/messages", methods=['GET'])
 def get_messages():
-    return jsonify(messages)
+    initial_messages = query_get_messages(messages_ref)
+    return jsonify(initial_messages)
 
 @socketio.on("message")
-def handleMessage(msg):
-    print(msg)
+def handle_message(msg):
+    query_add_message(messages_ref, msg)
     send(msg, broadcast=True)
     return None
 

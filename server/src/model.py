@@ -1,23 +1,12 @@
-import time
+# pylint: disable=missing-function-docstring
 
-messages = [
-        {
-            'content': 'Helloooo',
-            'from': 'user1',
-            'to': 'user2',
-            'createTs': time.time()
-        },
-        {
-            'content': 'Hows it going',
-            'from': 'user2',
-            'to': 'user1',
-            'createTs': time.time() + 1
-        },
-        {
-            'content': 'Good',
-            'from': 'user1',
-            'to': 'user2',
-            'createTs': time.time() + 2
-        },
-    ]
-        
+def query_get_messages(doc_ref):
+    docs = doc_ref.order_by("createTs").get()
+    initial_messages = []
+    for doc in docs:
+        initial_messages.append(doc.to_dict())
+
+    return initial_messages
+
+def query_add_message(doc_ref, msg):
+    doc_ref.add(msg)
