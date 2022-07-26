@@ -9,7 +9,7 @@
     "start-client2": "REACT_APP_USER=user2 && cd client && PORT=3001 npm start",
     "start-server": "cd server && source venv/bin/activate && cd src && python app.py",
     "start": "npm run start-client1 & npm run start-client2 & npm run start-server",
-    "install": "cd client && npm i && cd .. && cd server && pip3 install -r requirements.txt"
+    "install": "cd client && npm i && cd .. && cd server && pip3 install -r requirements.txt && python3 -m venv venv"
   },
   "repository": {
     "type": "git",
