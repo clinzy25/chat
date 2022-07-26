@@ -1,5 +1,7 @@
 ## Chat app
 
+React | Python / Flask | Firebase | SocketIO
+
 Requirements -- 
 Mac or linux (start scripts may not work in windows)
 Python3 and pip3
