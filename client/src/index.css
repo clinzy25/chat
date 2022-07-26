@@ -11,3 +11,38 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-ctr {
+  width: 40%;
+}
+
+.message-ctr {
+  height: 300px;
+  border: 1px solid rgb(193, 193, 193);
+  border-radius: 10px;
+}
+
+.input-ctr {
+  display: flex;
+  align-items: center;
+}
+
+input {
+  flex-grow: 1;
+  margin: 10px 0;
+  height: 30px;
+}
+
+button {
+  margin-left: 5px;
+  height: 30px;
+  box-sizing: content-box;
+}
