@@ -18,6 +18,7 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 15px;
 }
 
 .chat-ctr {
@@ -45,4 +46,10 @@ button {
   margin-left: 5px;
   height: 30px;
   box-sizing: content-box;
+}
+
+@media screen and (max-width: 1000px) {
+  .chat-ctr {
+    width: 100%;
+  }
 }
