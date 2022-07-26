@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
-import { config } from './config'
+import { api, socket } from './api'
 
 const App = () => {
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [input, setInput] = useState('')
 
-  const getMessages = () => {
+  const getInitialMessages = () => {
+    const url = `${api}/messages`
     try {
       setLoading(true)
-      fetch(`${config.api}/messages`)
-        .then((response) => response.json())
+      fetch(url)
+        .then((res) => res.json())
         .then((data) => setMessages(data))
       setLoading(false)
     } catch (error) {
@@ -20,8 +22,25 @@ const App = () => {
     }
   }
 
+  const handleSubmit = () => {
+    if (input) {
+      const newMessage = {
+        content: input,
+        from: 'user1',
+        to: 'user2',
+        createTs: new Date().getTime(),
+      }
+      socket.emit('message', newMessage)
+      setInput('')
+    } else {
+      alert('Message cannot be empty')
+    }
+  }
+
   useEffect(() => {
-    getMessages()
+    getInitialMessages()
+    socket.on('message', (msg) => setMessages((prev) => [...prev, msg]))
+    return () => socket.emit('end')
   }, []) // eslint-disable-line
 
   return (
@@ -33,11 +52,17 @@ const App = () => {
             ? 'loading...'
             : error
             ? 'error'
-            : messages.map((msg) => <p>{msg.content}</p>)}
+            : messages.map((msg) => <p key={msg.createTs}>{msg.content}</p>)}
         </div>
         <div className='input-ctr'>
-          <input type='text' placeholder='talk to yourself' />
-          <button type='submit'>Send</button>
+          <input
+            onChange={(e) => setInput(e.target.value)}
+            type='text'
+            placeholder='talk to yourself'
+            value={input}
+            onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+          />
+          <button onClick={handleSubmit}>Send</button>
         </div>
       </div>
     </main>
