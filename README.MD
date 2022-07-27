@@ -10,8 +10,9 @@ node.js
 ##### Running Locally
 
 1. make sure nothing running on localhost:3000
-2. cd into project root
-3. Run `npm run install`
-4. Run `npm start`
+2. in `/server` make a file named `firebase-key.json` and add the config I provided
+3. cd into project root
+4. Run `npm run install`
+5. Run `npm start`
 
 happy chatting
