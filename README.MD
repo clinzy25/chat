@@ -15,4 +15,6 @@ node.js
 4. Run `npm run install`
 5. Run `npm start`
 
+* if install fails on grpcio, it may ask you to update pip. Follow the prompt and re-run `npm run install`.
+
 happy chatting
